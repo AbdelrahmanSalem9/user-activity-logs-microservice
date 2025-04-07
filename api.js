@@ -18,8 +18,24 @@ mongoose
     process.exit(1);
   });
 
-
 app.use(express.json());
+
+app.get("/user-logs/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const transactionLog = await TransactionActivity.findById(id);
+    if (!transactionLog) {
+      return res.status(404).json({ error: "log id not found" });
+    }
+    res.json({
+      data: transactionLog,
+    });
+  } catch (error) {
+    console.error("Error fetching transaction log by ID:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 app.get("/user-logs", async (req, res) => {
   try {
