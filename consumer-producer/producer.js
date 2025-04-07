@@ -2,15 +2,15 @@ require("dotenv").config();
 const { Kafka } = require("kafkajs");
 const { generateRandomLog } = require("../custom-utils/log-utils");
 
-
 const writeRate = process.env.PRODUCER_LOG_RATE;
 const kafkaHost = process.env.KAFKA_HOST || "kafka";
+const topic = process.env.TOPIC || "transaction-producer";
 
 const kafka = new Kafka({
   clientId: "transaction-producer",
   brokers: [`${kafkaHost}:9092`],
 });
-const producer = kafka.producer();
+const producer = kafka.producer({ allowAutoTopicCreation: false });
 
 async function produceLog() {
   try {
@@ -19,7 +19,7 @@ async function produceLog() {
     while (true) {
       const log = generateRandomLog();
       await producer.send({
-        topic: "transaction-activity",
+        topic: topic,
         messages: [{ value: JSON.stringify(log) }],
       });
 
