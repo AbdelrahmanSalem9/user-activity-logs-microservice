@@ -6,11 +6,9 @@ require("dotenv").config();
 
 const app = express();
 
-// Mongodb connection URI
-const mongodbHost = process.env.MONGODB_HOST || "mongodb";
-const mongodbUri = `mongodb://${mongodbHost}:27017/transactionActivity`;
-const PORT = process.env.API_PORT;
-console.log(mongodbUri)
+// MongoDB connection URI (ensure it's set in your environment variables)
+const mongodbUri = process.env.MONGODB_URL;
+const PORT = process.env.API_PORT || 3000; // Use dynamic port or fallback to 3000
 // Connect to MongoDB
 mongoose
   .connect(mongodbUri)

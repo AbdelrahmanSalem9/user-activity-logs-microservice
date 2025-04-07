@@ -5,8 +5,8 @@ const TransactionActivity = require("../models/TransactionActivity");
 const { formatLog } = require("../custom-utils/log-utils");
 
 const kafkaHost = process.env.KAFKA_HOST || "kafka";
-const mongodbHost = process.env.MONGODB_HOST || "mongodb";
-const mongodbUri = `mongodb://${mongodbHost}:27017/transactionActivity`;
+const restartDelay = process.env.CONSUMER_RESTART_DELAY;
+const mongodbUri = process.env.MONGODB_URL;
 
 const kafka = new Kafka({
   clientId: "transaction-consumer",
