@@ -4,13 +4,15 @@ const mongoose = require("mongoose");
 const TransactionActivity = require("../models/TransactionActivity");
 const { formatLog } = require("../custom-utils/log-utils");
 
-const kafkaHost = process.env.KAFKA_HOST || "kafka";
 const restartDelay = process.env.CONSUMER_RESTART_DELAY;
 const mongodbUri = process.env.MONGODB_URL;
+const brokerHost = process.env.BROKER_HOST || "kafka";
+const brokerPort = process.env.BROKER_PORT || 9092;
+const topic = process.env.TOPIC || "transaction-activity";
 
 const kafka = new Kafka({
   clientId: "transaction-consumer",
-  brokers: [`${kafkaHost}:9092`],
+  brokers: [`${brokerHost}:${brokerPort}`],
 });
 
 const consumer = kafka.consumer({ groupId: "transaction-group" });
@@ -32,7 +34,7 @@ async function consumeLogs() {
   try {
     await consumer.connect();
     await consumer.subscribe({
-      topic: "transaction-activity",
+      topic: topic,
       fromBeginning: true,
     });
 

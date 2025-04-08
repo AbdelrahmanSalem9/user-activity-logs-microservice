@@ -3,14 +3,15 @@ const { Kafka } = require("kafkajs");
 const { generateRandomLog } = require("../custom-utils/log-utils");
 
 const writeRate = process.env.PRODUCER_LOG_RATE;
-const kafkaHost = process.env.KAFKA_HOST || "kafka";
-const topic = process.env.TOPIC || "transaction-producer";
+const topic = process.env.TOPIC || "transaction-activity";
+const brokerHost = process.env.BROKER_HOST || "kafka";
+const brokerPort = process.env.BROKER_PORT || 9092;
 
 const kafka = new Kafka({
   clientId: "transaction-producer",
-  brokers: [`${kafkaHost}:9092`],
+  brokers: [`${brokerHost}:${brokerPort}`],
 });
-const producer = kafka.producer({ allowAutoTopicCreation: false });
+const producer = kafka.producer();
 
 async function produceLog() {
   try {
