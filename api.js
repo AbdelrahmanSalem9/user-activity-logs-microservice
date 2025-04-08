@@ -6,9 +6,8 @@ require("dotenv").config();
 
 const app = express();
 
-// MongoDB connection URI (ensure it's set in your environment variables)
 const mongodbUri = process.env.MONGODB_URL;
-const PORT = process.env.API_PORT || 3000; // Use dynamic port or fallback to 3000
+const PORT = process.env.API_PORT || 3000; 
 // Connect to MongoDB
 mongoose
   .connect(mongodbUri)
